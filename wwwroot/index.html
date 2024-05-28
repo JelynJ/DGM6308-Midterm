@@ -20,6 +20,38 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+
+        let bgmAudio = null;
+
+        window.playBGM = function (bgmPath) {
+            if (bgmAudio) {
+                bgmAudio.pause();
+                bgmAudio.currentTime = 0;
+            }
+            bgmAudio = new Audio(bgmPath);
+            bgmAudio.loop = true;
+            bgmAudio.play();
+        };
+
+        window.pauseBGM = function () {
+            if (bgmAudio) {
+                bgmAudio.pause();
+            }
+        };
+
+        window.stopBGM = function () {
+            if (bgmAudio) {
+                bgmAudio.pause();
+                bgmAudio.currentTime = 0;
+            }
+        };
+
+        window.playSound = function (soundPath) {
+            var audio = new Audio(soundPath);
+            audio.play();
+        };
+    </script>
 </body>
 
 </html>
