@@ -1,0 +1,114 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="modal-overlay">
+    <div class="modal-content">
+        <!-- Display the winner's name in the modal title -->
+        <h2 class="modal-title">@Winner wins!</h2>
+        <div class="modal-buttons">
+            <!-- Button to restart the game -->
+            <button class="modal-button" @onclick="RestartGame">Restart</button>
+            <!-- Button to exit to the main menu -->
+            <button class="modal-button" @onclick="ExitToMainMenu">Exit</button>
+            <!-- Button to open the GitHub repository -->
+            <button class="modal-button" @onclick="OpenGitHub">About</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Import the 'Modak' font face */
+    font-face {
+        font-family: 'Modak';
+        src: url('css/fonts/Modak-Devanagari.ttf') format('truetype');
+    }
+
+    /* Styles for the modal overlay */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    /* Styles for the modal content */
+    .modal-content {
+        background-color: #1c1c1e;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-family: 'Modak', sans-serif;
+    }
+
+    /* Styles for the modal title */
+    .modal-title {
+        font-size: 2rem;
+        color: #f0f6fc;
+        margin-bottom: 1rem;
+        font-family: 'Modak', sans-serif;
+    }
+
+    /* Styles for the modal buttons container */
+    .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    /* Styles for the modal buttons */
+    .modal-button {
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #d197ff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-family: 'Modak', sans-serif;
+        -webkit-text-stroke: 1px #000000;
+    }
+
+        /* Hover styles for the modal buttons */
+        .modal-button:hover {
+            background-color: #000000;
+        }
+</style>
+
+@code {
+    // Parameter to receive the winner's name
+    [Parameter]
+    public string Winner { get; set; } = string.Empty;
+
+    // Event callback for restarting the game
+    [Parameter]
+    public EventCallback<bool> OnRestart { get; set; }
+
+    // Event callback for exiting to the main menu
+    [Parameter]
+    public EventCallback OnExit { get; set; }
+
+    // Method to exit to the main menu
+    private void ExitToMainMenu()
+    {
+        OnExit.InvokeAsync();
+    }
+
+    // Method to restart the game
+    private async void RestartGame()
+    {
+        await OnRestart.InvokeAsync(true);
+    }
+
+    // Method to open the GitHub repository
+    private void OpenGitHub()
+    {
+        NavigationManager.NavigateTo("https://github.com/JelynJ/DGM6308-Midterm", true);
+    }
+}

@@ -1,0 +1,211 @@
+﻿@page "/game-rules"
+@inject NavigationManager NavigationManager
+@using WebAssembly.Models
+
+<div class="game-rules-container">
+    <!-- Title of the game rules page -->
+    <h1 class="game-rules-title">Game Rules</h1>
+
+    <!-- Rule section for the objective of the game -->
+    <div class="rule">
+        <h2 class="rule-title">Objective</h2>
+        <p class="rule-description">
+            The objective of the game is to be the first player to get rid of all your cards.
+        </p>
+    </div>
+
+    <!-- Rule section for the game setup -->
+    <div class="rule">
+        <h2 class="rule-title">Setup</h2>
+        <p class="rule-description">
+            The game is played with a standard deck of 52 cards (without jokers). Each player is dealt 17 cards, and the remaining 18 cards form the draw pile.
+        </p>
+    </div>
+
+    <!-- Rule section for the gameplay -->
+    <div class="rule">
+        <h2 class="rule-title">Gameplay</h2>
+        <ul class="gameplay-rules">
+            <li>The player with the 3 of Spades starts the game by playing any card or combination of cards.</li>
+            <li>The next player must play a card or combination of cards that beats the previous play.</li>
+            <li>If a player cannot beat the previous play, they must pass their turn.</li>
+            <li>When all players pass, the last player to make a successful play can start a new round with any card or combination of cards.</li>
+            <li>Please ignore the suits!</li>
+            <li>The penalty for an invalid play is that the opponent gets an extra turn.</li>
+        </ul>
+    </div>
+
+    <!-- Rule section for valid plays -->
+    <div class="rule">
+        <h2 class="rule-title">Valid Plays</h2>
+        <p class="rule-description">
+            The following are valid plays:
+        </p>
+        <ul class="valid-plays">
+            <!-- Valid play: Single -->
+            <li>
+                <strong>Single:</strong> A single card of any rank.
+                <div class="card-example">
+                    <img src="images/cards/card_hearts_07.png" alt="7 of Hearts" class="card" />
+                </div>
+            </li>
+            <!-- Valid play: Pair -->
+            <li>
+                <strong>Pair:</strong> Two cards of the same rank.
+                <div class="card-example">
+                    <img src="images/cards/card_clubs_09.png" alt="9 of Clubs" class="card" />
+                    <img src="images/cards/card_diamonds_09.png" alt="9 of Diamonds" class="card" />
+                </div>
+            </li>
+            <!-- Valid play: Sisters -->
+            <li>
+                <strong>Sisters:</strong> Two consecutive pairs.
+                <div class="card-example">
+                    <img src="images/cards/card_clubs_09.png" alt="9 of Clubs" class="card" />
+                    <img src="images/cards/card_diamonds_09.png" alt="9 of Diamonds" class="card" />
+                    <img src="images/cards/card_spades_10.png" alt="10 of Spades" class="card" />
+                    <img src="images/cards/card_hearts_10.png" alt="10 of Hearts" class="card" />
+                </div>
+            </li>
+            <!-- Valid play: Triple -->
+            <li>
+                <strong>Triple:</strong> Three cards of the same rank.
+                <div class="card-example">
+                    <img src="images/cards/card_spades_J.png" alt="Jack of Spades" class="card" />
+                    <img src="images/cards/card_hearts_J.png" alt="Jack of Hearts" class="card" />
+                    <img src="images/cards/card_diamonds_J.png" alt="Jack of Diamonds" class="card" />
+                </div>
+            </li>
+            <!-- Valid play: Captives (Three with Two) -->
+            <li>
+                <strong>Captives (Three with Two):</strong> Three cards of the same rank, accompanied by a pair. The ranking is based on the triple.
+                <div class="card-example">
+                    <img src="images/cards/card_spades_J.png" alt="Jack of Spades" class="card" />
+                    <img src="images/cards/card_hearts_J.png" alt="Jack of Hearts" class="card" />
+                    <img src="images/cards/card_diamonds_J.png" alt="Jack of Diamonds" class="card" />
+                    <img src="images/cards/card_clubs_09.png" alt="9 of Clubs" class="card" />
+                    <img src="images/cards/card_diamonds_09.png" alt="9 of Diamonds" class="card" />
+                </div>
+            </li>
+            <!-- Valid play: Straight -->
+            <li>
+                <strong>Straight:</strong> Five cards of consecutive rank. (Lowest - 34567, Highest - JQKA2)
+                <div class="card-example">
+                    <img src="images/cards/card_clubs_08.png" alt="8 of Clubs" class="card" />
+                    <img src="images/cards/card_diamonds_09.png" alt="9 of Diamonds" class="card" />
+                    <img src="images/cards/card_spades_10.png" alt="10 of Spades" class="card" />
+                    <img src="images/cards/card_hearts_J.png" alt="Jack of Hearts" class="card" />
+                    <img src="images/cards/card_clubs_Q.png" alt="Queen of Clubs" class="card" />
+                </div>
+            </li>
+            <!-- Valid play: Bomb -->
+            <li>
+                <strong>Bomb:</strong> Four cards of the same rank. A bomb can beat any other play except a higher bomb.
+                <div class="card-example">
+                    <img src="images/cards/card_spades_A.png" alt="Ace of Spades" class="card" />
+                    <img src="images/cards/card_hearts_A.png" alt="Ace of Hearts" class="card" />
+                    <img src="images/cards/card_clubs_A.png" alt="Ace of Clubs" class="card" />
+                    <img src="images/cards/card_diamonds_A.png" alt="Ace of Diamonds" class="card" />
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Rule section for discarding and drawing cards -->
+    <div class="rule">
+        <h2 class="rule-title">Discarding and Drawing Cards</h2>
+        <p class="rule-description">
+            At the start of each turn, a player can choose to discard up to 9 cards and draw an equal number of cards from the draw pile. The discarded cards are placed at the bottom of the draw pile.
+        </p>
+    </div>
+
+    <!-- Button to navigate back to the game page -->
+    <button class="back-button" @onclick="NavigateBack">Back to Game</button>
+</div>
+
+<style>
+    /* CSS styles for the game rules page */
+    .game-rules-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .game-rules-title {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333;
+    }
+
+    .rule {
+        margin-bottom: 30px;
+    }
+
+    .rule-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .rule-description {
+        font-size: 18px;
+        line-height: 1.5;
+        color: #666;
+    }
+
+    .gameplay-rules, .valid-plays {
+        list-style-type: disc;
+        margin-left: 30px;
+        font-size: 18px;
+        line-height: 1.5;
+        color: #666;
+    }
+
+    .card-example {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .card {
+        width: 128px;
+        height: 128px;
+        margin: 0 5px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-button {
+        display: block;
+        width: 200px;
+        height: 40px;
+        margin: 20px auto 0;
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+@code {
+    // Method to navigate back to the game page
+    private void NavigateBack()
+    {
+        NavigationManager.NavigateTo("/game");
+    }
+}
